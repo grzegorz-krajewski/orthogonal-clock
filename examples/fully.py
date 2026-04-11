@@ -1,5 +1,3 @@
-import orthos_time
-import orthos_cipher
 import time
 
 print("--- PROJEKT SYSTEMU 3-9: POKAZ MOŻLIWOŚCI ---")
