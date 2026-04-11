@@ -32,13 +32,13 @@ For communication and cryptographic purposes, you can use a compressed data stri
 ---
 
 ## 📁 Repository Contents
-* `orthos_time.py` - Core time library (Calculates spheres, cycles, orthos, and trend).
-* `orthos_cipher.py` - Cryptographic library (Dynamic cipher shifting based on the current Orthos trend).
-* `przyklad_kompletny.py` - Complete execution file (Clear text, open for testing).
-* `zegar_mechaniczny.py` - Visual Python mechanical simulator (With rotating dial and trend arrows).
-* `mechanizm.txt` - Technical description of the dial and wave time effect.
-* `epoki.txt` - Macro-scale time breakdown for solar years and cosmic epochs.
-* `skala.txt` - Mathematical proof with a list of 22 moments of perpendicularity.
+* `src/orthos_time.py` - Core time library (Calculates spheres, cycles, orthos, and trend).
+* `src/orthos_cipher.py` - Cryptographic library (Dynamic cipher shifting based on the current Orthos trend).
+* `src/mechanical.py` - Visual Python mechanical simulator (With rotating dial and trend arrows).
+* `examples/cipher.py` - Complete execution file (Clear text, open for testing).
+* `docs/mechanism.md` - Technical description of the dial and wave time effect.
+* `docs/epochs.md` - Macro-scale time breakdown for solar years and cosmic epochs.
+* `docs/scale.md` - Mathematical proof with a list of 22 moments of perpendicularity.
 
 ## ⚖️ Copyright & License
 Copyright (c) 2026. All Rights Reserved. The source code and mathematical concept are the private property of the author of this repository. Copying, distribution, and use without the author's consent are prohibited.
