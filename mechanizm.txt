@@ -3,22 +3,18 @@ Data: 11 kwietnia 2026 r.
 Autor: Grzegorz Krajewski
 
 1. ZAŁOŻENIA PROJEKTOWE TARCZY MINUTOWEJ
-W tradycyjnych zegarach tarcza minutowa jest podzielona na 60 równych części (minut) odpowiadających pełnemu obrotowi 360 stopni. Niniejszy projekt całkowicie odrzuca ten podział.
+Projekt całkowicie odrzuca tradycyjny podział na 60 minut. Tarcza jest wyskalowana w jednostkach "Ortos" oraz "Centi":
+- Pozycje prostopadłe do wskazówki Cyklu oznaczone są jako 0 Ortosów.
+- Pozycja pokrywająca się ze wskazówką Cyklu to 90 Ortosów.
+- Jeden Ortos dzieli się na 100 jednostek Centi (zastępujących sekundy).
 
-W Systemie 3-9 tarcza minutowa jest wyskalowana w jednostkach "Ortos" (stopniach odchylenia od prostopadłości):
-- Pozycje godziny 3:00 i 9:00 na tarczy są oznaczone jako 0° (Filar / Stan idealnej równoległości do osi horyzontalnej).
-- Pozycje godziny 12:00 i 6:00 na tarczy są oznaczone jako 90° (Maksymalne odchylenie).
-- Skala porusza się w przedziałach od 0 do 90 i z powrotem do 0 w każdym kwadrancie koła.
+2. ZJAWISKO FALOWANIA I TRENDÓW (NOWOŚĆ)
+W ciągu każdego Cyklu (godziny) wartość Ortosa dwukrotnie spada do zera i dwukrotnie rośnie do maksimum. W celu rozróżnienia tych faz wprowadzono oznaczenia trendu:
+- Strzałka w dół [↓]: Faza zbliżania się do stanu idealnego (Ortos dąży do 0°).
+- Strzałka w górę [↑]: Faza oddalania się od stanu idealnego (Ortos rośnie do 90°).
 
-2. SPECYFIKACJA WSKAZÓWKI MINUTOWEJ
-- Wskazówka minutowa nie jest pojedynczym promieniem wychodzącym ze środka tarczy.
-- Jest to jednolita linia ciągła przechodząca przez centralny punkt obrotu (średnica koła tarczy).
-- Ponieważ jest linią prostą, oba jej końce wskazują dokładnie tę samą wartość "Ortosa" na przeciwległych stronach tarczy. Eliminuje to potrzebę rozróżniania, który koniec jest "właściwy".
-
-3. ODCZYT CZASU MECHANICZNEGO
-Użytkownik odczytuje czas w następujący sposób:
-1. Sprawdza pozycję tradycyjnej krótkiej wskazówki godzinowej (Cykl).
-2. Sprawdza, na jaką wartość stopniową (0°-90°) wskazuje długa linia minutowa.
-3. Wynik to unikalna para danych określająca precyzyjny stan geometryczny wszechświata w danej chwili.
+3. SPECYFIKACJA WSKAZÓWEK I ODCZYTU
+Użytkownik odczytuje czas na podstawie obracającej się tarczy (Cykl) oraz wskazówki Ortosa poruszającej się po niej, wspierając się badaniem kierunku ruchu wskazówki.
 
 Grzegorz Krajewski
+(Podpis autora)
