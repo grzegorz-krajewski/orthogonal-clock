@@ -1,13 +1,13 @@
 OPIS SKALI MAKRO SYSTEMU 3-9 (MIESIĄCE I EPOKI)
 Data: 11 kwietnia 2026 r.
-Autor: Grzegorz Krajewski
+Autor: [Twoje Imię i Nazwisko]
 
 1. CYKL SOLARNY (ROK)
 Przeniesienie osi 3-9 na orbitę Ziemi wokół Słońca:
-- Filary 3 i 9 odpowiadają Równonocy Wiosennej i Jesiennej (moment idealnego balansu światła i cienia).
-- Sfera [+] reprezentuje okres wiosenno-letni.
-- Sfera [-] reprezentuje okres jesienno-zimowy.
-- Ortos Roku to odchylenie pozycji Ziemi od punktu równonocy (gdzie Przesilenie to maksymalne 90 stopni).
+- Filary 3 i 9 odpowiadają Równonocy Wiosennej i Jesiennej (moment idealnego balansu światła i cienia, Ortos dąży do 0°).
+- Sfera [+] reprezentuje okres wiosenno-letni (wznoszenie).
+- Sfera [-] reprezentuje okres jesienno-zimowy (opadanie).
+- Ortos Roku to odchylenie pozycji Ziemi od punktu równonocy. Trend również występuje w cyklu zbliżania się i oddalania od tych punktów.
 
 2. EPOKI (WIELKI ROK)
 - Epoka w Systemie 3-9 to okres ok. 2160 lat, wynikający z precesji osi Ziemi.
