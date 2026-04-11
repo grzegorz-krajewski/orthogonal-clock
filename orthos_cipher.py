@@ -1,25 +1,24 @@
 """
 Orthos Cipher Library - System 3-9
 Copyright (c) 2026. All Rights Reserved.
-Obfuscated Core.
 """
-import base64
 
-_p = (
-    "wo7Cj8KQSsKJwpHCj8KYwo/CnMKLwp7Cj8KJwpXCj8KjUsKdwprCksKPwpzCj1ZKwo3Co8KN"
-    "wpbCj1ZKwpnCnMKewpLCmcKdU2Q0SkpKSsKgwo/CjcKewpnCnEpnSsKTwpjCnlJSwo3Co8KN"
-    "wpbCj0pUSltaWlNKVUpSwpPCmMKeUsKZwpzCnsKSwpnCnUpUSltaU1NTNEpKSkrCnMKPwp7C"
-    "n8KcwphKV8Kgwo/CjcKewpnCnErCk8KQSsKdwprCksKPwpzCj0pnZ0pMwoVXwodMSsKPwpbC"
-    "ncKPSsKgwo/CjcKewpnCnDQ0wo7Cj8KQSsKPwpjCjcKcwqPCmsKeUsKewo/CosKeVkrCncKa"
-    "wpLCj8Kcwo9WSsKNwqPCjcKWwo9WSsKZwpzCnsKSwpnCnVNkNEpKSkrCoMKPwo3CnsKZwpxK"
-    "mdKwonCkcKPwpjCj8KcwovCnsKPwonClcKPwqNSwp3CmsKSwo/CnMKPZErCncKewpxWSsKdw"
-    "prCksKPwpzCj2RKwp3CnsKcVkrCjcKjwo3ClsKPZErCk8KYwp5WSsKZwpzCnsKSwpnCnWRK"
-    "wpDClsKZwovCnlNKV2hKwp3CnsKcZDRKSkpKwqDCj8KNwp7CmcKcU0pPSltbW15bW1xTSsKQ"
-    "wpnCnErCjcKSwovCnErCk8KYSsKNwpPCmsKSwo/CnMKJwp7Cj8Kiwp5TNDTCjsKPwpBKwo7C"
-    "j8KNwpzCo8Kawp5Swo3Ck8KawpLCj8KcwonCnsKPwqLCnlZKwp3CmsKSwo/CnMKPVkrCjcKj"
-    "wo3ClsKPVkrCmcKcwp7CksKZwp1TNEpKSkrCnMKPwp7Cn8KcwphKTExYwpTCmcKTwphSwo3C"
-    "ksKcUlLCmcKcwo5Swo3CksKLwpxTSldKwqDCj8KNwp7CmcKcU0pPSltbW15bW1xTSsKQwpnC"
-    "nErCjcKSwovCnErCk8KYSsKNwpPCmsKSwo/CnMKJwp7Cj8Kiwp5TNA=="
-)
+def _generate_key(sphere: str, cycle: int, orthos: int, centi: int, trend: str) -> int:
+    """Helper function generating shift vector based on the 3-9 scale and trend."""
+    vector = int((cycle * 100) + (orthos * 10) + centi)
+    
+    # Trend modyfikuje klucz (np. podwaja go przy spadku)
+    if trend == "↓":
+        vector += 500
+        
+    return -vector if sphere == "[-]" else vector
 
-exec("".join(chr((ord(c) - 42) % 1114112) for c in base64.b64decode(_p).decode('utf-8')))
+def encrypt(text: str, sphere: str, cycle: int, orthos: int, centi: int, trend: str) -> str:
+    """Encrypts input text based on the 3-9 System time and trend."""
+    vector = _generate_key(sphere, cycle, orthos, centi, trend)
+    return "".join(chr((ord(char) + vector) % 1114112) for char in text)
+
+def decrypt(cipher_text: str, sphere: str, cycle: int, orthos: int, centi: int, trend: str) -> str:
+    """Decrypts text encrypted with the 3-9 System based on the provided key."""
+    vector = _generate_key(sphere, cycle, orthos, centi, trend)
+    return "".join(chr((ord(char) - vector) % 1114112) for char in cipher_text)
