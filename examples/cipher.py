@@ -1,4 +1,12 @@
 import time
+from pathlib import Path
+import sys
+
+sciezka_src = Path(__file__).resolve().parent.parent / 'src'
+sys.path.append(str(sciezka_src))
+
+import orthos_time
+import orthos_cipher
 
 print("--- PROJEKT SYSTEMU 3-9: POKAZ MOŻLIWOŚCI ---")
 
