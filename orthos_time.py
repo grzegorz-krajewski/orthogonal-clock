@@ -1,29 +1,49 @@
 """
 Orthos Time Library - System 3-9
 Copyright (c) 2026. All Rights Reserved.
-Obfuscated Core.
 """
-import base64
+import math
+import time
 
-_p = (
-    "wpPCl8KawpnCnMKeSsKXwovCnsKSNMKTwpfCmsKZwpzCnkrCnsKTwpfCjzQ0wo7Cj8KQSsKR"
-    "wo/CnsKJXcKJY8KJwp7Ck8KXwo9SU2Q0SkpKSsKeSmdKwp7Ck8KXwo9YwpbCmcKNwovClsKe"
-    "wpPCl8KPUlM0SkpKSsKSVkrCl1ZKwp1KZ0rCnljCnsKXwonCksKZwp/CnFZKwp5Ywp7Cl8KJ"
-    "wpfCk8KYVkrCnljCnsKXwonCncKPwo00SkpKSsKdwprCksKPwpzCj0pnSkzChVfCh0xKwpPC"
-    "kEpdSmZnSsKSSmZKY0rCj8KWwp3Cj0pMwoVVwodMNEpKSkrCjcKjwo3ClsKPSmdKwpJKT0pb"
-    "XDRKSkpKwovCmMKRwpbCj8KJwpJKZ0pSwpJKT0pbXEpVSsKXSllKYFpKVUrCnUpZSl1gWlpT"
-    "SlRKXVo0SkpKSsKLwpjCkcKWwo/CicKXSmdKUsKXSlVKwp1KWUpgWlNKVEpgNEpKSkrCi8KY"
-    "wpHClsKPwonCl8KJwpfCmcKOUmdKW0pWSsKLwpjCkcKWwo/CicKXSk9KW2JaNEpKSkrCi8KY"
-    "wpHClsKPwonCksKJwpfCmcKOSmdKwovCmMKRwpbCj8KJwpJKT0pbYlo0SkpKSsKOwpPCkMKQ"
-    "wonCi8KYwpHClsKPSmdKwovCjMKdUsKLwpjCkcKWwo/CicKSwonCl8KmcKOUzRKSkpKwpPC"
-    "kErCjsKTwpDCkMKJwovCmMKRwpbCj0poSmNaZDRKSkpKSkpKSsKOwpPCkMKQwonCi8KYwpHC"
-    "lsKPSmdKW2JaSldKwo7Ck8KQwpDCicKLwpjCkcKWwo80SkpKSsKZwpzCnsKSwpnCnUpnSsKL"
-    "wozCnVJjWkpXSsKOwpPCkMKQwonCi8KYwpHClsKPUzRKSkpKwpzCj8Kewp/CnMKYSsKdwpr"
-    "CksKPwpzCj1ZKwo3Co8KNwpbCj1ZKwpzCmcKfwpjCjlLCmcKcwp7CksKZwp1WSlxTNDTCjsKP"
-    "wpBKwpDCmcKcwpfCi8KewonCnsKTwpfCj1LCncKawpLCj8Kcwo9WSsKNwqPCjcKWwo9WSsKZ"
-    "wpzCnsKSwpnCnVNkNEpKSkrCnMKPwp7Cn8KcwphKwpBMwqXCncKawpLCj8Kcwo/Cp0ptwqPC"
-    "jcKWwo9kSsKlwo3Co8KNwpbCj8KnSsKmSnnCnMKewpLCmcKdZErCpcKZwpzCnsKSwpnCnWRY"
-    "XMKQwqdMNA=="
-)
+# Zmienna globalna do przechowywania poprzedniej wartości Ortosa (do badania trendu)
+_last_orthos = 0.0
 
-exec("".join(chr((ord(c) - 42) % 1114112) for c in base64.b64decode(_p).decode('utf-8')))
+def get_3_9_time():
+    """
+    Gets the current system time and converts it to the 3-9 System units with trend.
+    Returns a tuple: (sphere, cycle, orthos, centi, trend)
+    """
+    global _last_orthos
+    
+    t = time.localtime()
+    h, m, s = t.tm_hour, t.tm_min, t.tm_sec
+    
+    sphere = "[-]" if 3 <= h < 9 else "[+]"
+    cycle = h % 12
+    
+    angle_h = (h % 12 + m / 60 + s / 3600) * 30
+    angle_m = (m + s / 60) * 6
+    
+    angle_m_mod = angle_m % 180
+    angle_h_mod = angle_h % 180
+    diff_angle = abs(angle_h_mod - angle_m_mod)
+    if diff_angle > 90:
+        diff_angle = 180 - diff_angle
+        
+    orthos_full = abs(90 - diff_angle)
+    orthos = int(orthos_full)
+    centi = int((orthos_full - orthos) * 100)
+    
+    # Wyznaczanie trendu (Spadek / Wzrost)
+    if orthos_full < _last_orthos:
+        trend = "↓" # Zbliżanie do zera
+    else:
+        trend = "↑" # Oddalanie od zera
+        
+    _last_orthos = orthos_full
+    
+    return sphere, cycle, orthos, centi, trend
+
+def format_time(sphere: str, cycle: int, orthos: int, centi: int, trend: str) -> str:
+    """Returns a readable string formatted in the 3-9 System."""
+    return f"{sphere} Cycle: {cycle} | Orthos: {orthos}° {trend} | Centi: {centi:02d}"
