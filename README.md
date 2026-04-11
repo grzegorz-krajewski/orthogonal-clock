@@ -1,28 +1,32 @@
-# Projekt: Zegar Systemu 3-9 (Chronometria Ortogonalna)
+# Project: 3-9 System Clock (Orthogonal Chronometry)
 
-## 💡 Opis Koncepcji
-Autorski system organizacji i odczytu czasu bazujący na geometrii wskazówek klasycznego zegara. Projekt odrzuca tradycyjny podział godziny na 60 równych minut na rzecz badania napięcia geometrycznego między wskazówkami.
+## 💡 Concept Description
+An original system of time organization and reading based on the geometry of classic clock hands. The project completely rejects the traditional division of an hour into 60 equal minutes in favor of reading the geometric tension between hands.
 
-### Główne Założenia:
-* **Wskazówka minutowa** działa jako linia przechodząca przez całą tarczę (średnica).
-* **Osią bazową (horyzontem)** systemu są godziny `3:00` i `9:00`. Dzielą one dobę na sferę górną (dzień/szczyt) oraz dolną (noc/odpoczynek).
-
----
-
-## ⏳ Jak odczytywać czas w Systemie 3-9?
-
-Zapis czasu w tym systemie składa się z trzech elementów, np.: **`[+] Cykl: 3 | Ortos: 0.06`**
-
-1. **Sfera `[+]` lub `[-]`** - Określa, czy czas znajduje się w górnej sferze dobowej (nad linią 3-9), czy w dolnej (pod linią 3-9).
-2. **Cykl** - Odpowiednik tradycyjnej godziny (od 0 do 11). Stanowi fundament, na którym opiera się układ.
-3. **Ortos** - Nowa jednostka określająca minuty. Jest to **stopień odchylenia od prostopadłości** linii minutowej względem wskazówki godzinowej (od wartości `0` do `90`). 
-   * Wartość `0` (Moment Ortos) to stan idealnej harmonii i prostopadłości (krzyż prosty).
+### Main Rules:
+* **The minute hand** acts as a straight line passing through the entire dial (diameter).
+* **The base axis (horizon)** of the system is the 3:00 and 9:00 line. It divides the day into a upper sphere (day/peak) and a lower sphere (night/rest).
 
 ---
 
-## 📁 Zawartość Repozytorium
-* `skala.txt` - Dowód matematyczny z wykazem 22 momentów pełnej prostopadłości w cyklu 12-godzinnym.
-* `zegar.py` - Kod źródłowy w języku Python. W pełni funkcjonalny symulator graficzny odliczający czas w Cyklach i Ortosach.
+## ⏳ How to read time in the 3-9 System?
 
-## ⚖️ Prawa Autorskie
-Copyright (c) 2026. Wszelkie prawa zastrzeżone. Kod źródłowy oraz koncepcja matematyczna są prywatną własnością autora tego repozytorium. Kopiowanie, rozpowszechnianie oraz wykorzystywanie bez zgody autora jest zabronione.
+Time notation in this system consists of three elements, e.g., **`[+] Cycle: 3 | Orthos: 0.06`**
+
+1. **Sphere `[+]` or `[-]`** - Determines whether the time is in the upper diurnal sphere (above the 3-9 line) or in the lower sphere (below the 3-9 line).
+2. **Cycle** - The equivalent of a traditional hour (from 0 to 11). It is the base foundation of the system.
+3. **Orthos** - A brand new unit determining minutes. It is the **degree of deviation from perpendicularity** of the minute line relative to the hour hand (from `0` to `90`).
+   * A value of `0` (The Orthos Moment) is a state of ideal harmony and perpendicularity (perfect cross).
+
+---
+
+## 📁 Repository Contents
+* `orthos_time.py` - Core time library (Obfuscated/Hidden source).
+* `orthos_cipher.py` - Cryptographic library (Obfuscated/Hidden source).
+* `przyklad_kompletny.py` - Complete execution file (Clear text, open for testing).
+* `zegar_mechaniczny.py` - Visual Python mechanical simulator.
+* `mechanizm.txt` - Technical description of the dial.
+* `skala.txt` - Mathematical proof with a list of 22 moments of perpendicularity.
+
+## ⚖️ Copyright & License
+Copyright (c) 2026. All Rights Reserved. The source code and mathematical concept are the private property of the author of this repository. Copying, distribution, and use without the author's consent are prohibited.
