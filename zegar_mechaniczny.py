@@ -2,10 +2,10 @@ import tkinter as tk
 import math
 import time
 
-class PrawdziwyZegarOrtogonalny3_9:
+class ZegarOrtosOznaczony3_9:
     def __init__(self, root):
         self.root = root
-        self.root.title("Zegarek Jednowskazówkowy Systemu 3-9")
+        self.root.title("Zegarek Systemu 3-9 z Oznaczeniami i Trendem")
         self.root.geometry("500x620")
         self.root.resizable(False, False)
         
@@ -15,24 +15,20 @@ class PrawdziwyZegarOrtogonalny3_9:
         self.lbl_czas = tk.Label(self.root, text="", font=("Courier New", 14, "bold"), fg="#f8fafc", bg="#1e293b")
         self.lbl_czas.pack(fill="both", expand=True)
         
+        self._last_ortos_val = 0.0
         self.aktualizuj_mechanizm()
 
     def aktualizuj_mechanizm(self):
         self.canvas.delete("all")
         
-        # Pobieranie czasu systemowego z dokładnością do ułamków sekund
         czas_teraz = time.time()
         t = time.localtime(czas_teraz)
         h, m, s = t.tm_hour, t.tm_min, t.tm_sec
-        # Dodajemy ułamki sekund do obliczeń płynnego ruchu
         ułamki_sekund = czas_teraz % 1
         
-        # 1. OBLICZANIE KĄTÓW (Z ułamkiem sekundy dla super-płynności)
-        sekundy_plynne = s + ułamki_sekund
-        kat_h = (h % 12 + m / 60 + sekundy_plynne / 3600) * 30
-        kat_m = (m + sekundy_plynne / 60) * 6
+        kat_h = (h % 12 + m / 60 + (s + ułamki_sekund) / 3600) * 30
+        kat_m = (m + (s + ułamki_sekund) / 60) * 6
 
-        # 2. RYSOWANIE RUCHOMEJ TARCZY
         self.canvas.create_oval(70, 70, 430, 430, outline="#334155", width=2)
         
         for i in range(0, 360, 15):
@@ -51,25 +47,27 @@ class PrawdziwyZegarOrtogonalny3_9:
             self.canvas.create_line(x1, y1, x2, y2, fill=color, width=2)
             
             if i % 30 == 0:
-                xt = 250 + 155 * math.sin(rad_rys)
-                yt = 250 - 155 * math.cos(rad_rys)
-                self.canvas.create_text(xt, yt, text=f"{int(ortos_val)}°", fill="#94a3b8", font=("Helvetica", 9))
+                xt = 250 + 152 * math.sin(rad_rys)
+                yt = 250 - 152 * math.cos(rad_rys)
+                
+                if ortos_val == 90:
+                    etykieta = f"Cykl {(i // 30) % 12}"
+                else:
+                    etykieta = f"{int(ortos_val)} Ortos"
+                    
+                self.canvas.create_text(xt, yt, text=etykieta, fill="#94a3b8", font=("Helvetica", 7))
 
-        # 3. JEDYNA WSKAZÓWKA GODZINOWA (Cykl)
-        rad_h = math.radians(kat_h)
-        x_h = 250 + 120 * math.sin(rad_h)
-        y_h = 250 - 120 * math.cos(rad_h)
-        self.canvas.create_line(250, 250, x_h, y_h, fill="#ef4444", width=5, arrow=tk.LAST)
+        self.canvas.create_polygon(250, 45, 243, 25, 257, 25, fill="#ef4444")
+        self.canvas.create_text(250, 15, text="BIEŻĄCY CYKL", fill="#ef4444", font=("Helvetica", 8, "bold"))
+        self.canvas.create_line(250, 45, 250, 70, fill="#ef4444", width=2, dash=(2,2))
+
+        rad_m = math.radians(kat_m)
+        x_m = 250 + 170 * math.sin(rad_m)
+        y_m = 250 - 170 * math.cos(rad_m)
+        self.canvas.create_line(250, 250, x_m, y_m, fill="#3b82f6", width=2, arrow=tk.LAST)
         
-        # 4. STATYCZNY ZNACZNIK ODCZYTU ORTOSA (Na samej górze tarczy - 12:00)
-        self.canvas.create_polygon(250, 40, 245, 25, 255, 25, fill="#10b981")
-        self.canvas.create_text(250, 15, text="PUNKT ODCZYTU ORTOSA", fill="#10b981", font=("Helvetica", 8, "bold"))
-        self.canvas.create_line(250, 40, 250, 70, fill="#10b981", width=2, dash=(2,2))
-
-        # Środek zegara
         self.canvas.create_oval(244, 244, 256, 256, fill="#e2e8f0", outline="#0f172a", width=2)
 
-        # 5. OBLICZANIE WARTOŚCI DO WYŚWIETLACZA
         kat_m_mod = kat_m % 180
         kat_h_mod = kat_h % 180
         rozny_kat = abs(kat_h_mod - kat_m_mod)
@@ -80,18 +78,21 @@ class PrawdziwyZegarOrtogonalny3_9:
         ortos = int(ortos_pelny)
         centi = int((ortos_pelny - ortos) * 100)
 
+        # Wykrywanie trendu
+        trend = "↓" if ortos_pelny < self._last_ortos_val else "↑"
+        self._last_ortos_val = ortos_pelny
+
         sfera = "[+]" if not (3 <= h < 9) else "[-]"
         
         self.lbl_czas.config(
-            text=f"{sfera} Cykl: {h%12} | Ortos: {ortos}° | Centi: {centi:02d}\n"
-                 f"Tyknięcie zegara: co 1 Centi (~109 ms)\n"
+            text=f"{sfera} Cykl: {h%12} | Ortos: {ortos}° {trend} | Centi: {centi:02d}\n"
+                 f"Odświeżanie: co 1 Centi (~109 ms)\n"
                  f"Tradycyjny podgląd: {h:02d}:{m:02d}:{s:02d}"
         )
         
-        # KLUCZOWA ZMIANA: Odświeżanie co 109 milisekund, a nie co 1000!
         self.root.after(109, self.aktualizuj_mechanizm)
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = PrawdziwyZegarOrtogonalny3_9(root)
+    app = ZegarOrtosOznaczony3_9(root)
     root.mainloop()
