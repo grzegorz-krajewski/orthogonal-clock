@@ -26,8 +26,8 @@ Full time notation in this system consists of four elements, e.g., **`[+] Cycle:
 ### ⏱️ Short Cyberpunk Notation (Quick Read)
 For communication and cryptographic purposes, you can use a compressed data string without spaces:
 **Format:** `[Sphere][Cycle] [Orthos][Trend]`
-* **Example:** `+7 45U` -> Upper Sphere [+], Cycle 7, 45 Orthos, Trend increasing (Up).
-* **Example:** `-2 10D` -> Lower Sphere [-], Cycle 2, 10 Orthos, Trend decreasing (Down).
+* **Example:** `+7 C / 45 I` -> Upper Sphere [+], Cycle 7, 45 Orthos, Trend increasing (Up).
+* **Example:** `-2 C / 10 D` -> Lower Sphere [-], Cycle 2, 10 Orthos, Trend decreasing (Down).
 
 ---
 
