@@ -1130,7 +1130,173 @@ Implementacja wzorcowa powinna:
 * udostępniać testy jednostkowe dla przypadków referencyjnych,
 * pozwalać na rozszerzenie o kolejne wersje specyfikacji bez łamania zgodności wstecznej.
 
-## 15. Plan dalszej rozbudowy dokumentu
+## 15. Ograniczenia, pytania otwarte i roadmapa teorii
+
+### 15.1. Rola niniejszego rozdziału
+
+Celem niniejszego rozdziału jest jawne wskazanie ograniczeń wersji 0.1, zidentyfikowanie pytań, które pozostają nierozstrzygnięte, oraz wyznaczenie kierunków rozwoju Chronometrii Ortogonalnej.
+
+Jawne wskazywanie ograniczeń nie osłabia systemu. Przeciwnie — zwiększa jego wiarygodność, ponieważ odróżnia elementy domknięte formalnie od elementów eksploracyjnych.
+
+### 15.2. Ograniczenie źródłowe
+
+W wersji 0.1 Chronometria Ortogonalna nie definiuje własnej niezależnej skali czasu absolutnego.
+
+System wymaga chwili bazowej pochodzącej z innego źródła, takiego jak:
+
+* UTC,
+* czas lokalny,
+* Unix time,
+* równoważna skala wejściowa.
+
+Oznacza to, że obecna wersja jest systemem transformacji i reprezentacji, a nie jeszcze autonomicznym źródłem czasu infrastrukturalnego.
+
+### 15.3. Ograniczenie odwracalności
+
+Wartość `Orth(T)` oraz nawet rozszerzony stan ortogonalny nie gwarantują pełnej odwracalności do unikalnej chwili bazowej.
+
+Jest to konsekwencja samej konstrukcji systemu:
+
+* redukcji modulo 180 stopni,
+* symetryzacji względem 90 stopni,
+* okresowości ruchu wskazań,
+* częściowej utraty informacji przy przejściu do reprezentacji relacyjnej.
+
+W praktyce oznacza to, że Chronometria Ortogonalna nie jest jeszcze pełnym kodem chwili, lecz projekcją relacyjną chwili.
+
+### 15.4. Ograniczenie modelu tarczowego
+
+Model podstawowy wyrasta z geometrii klasycznej tarczy analogowej.
+
+Jest to siła systemu, ponieważ dostarcza intuicyjnego modelu odniesienia, ale jednocześnie ograniczenie, ponieważ:
+
+* wiąże system z reprezentacją historycznie ukształtowaną,
+* może utrudniać rozszerzenie na systemy niezależne od modelu zegara wskazówkowego,
+* pozostawia pytanie, czy relacja ortogonalna jest cechą samego czasu, czy wybranego sposobu jego geometryzacji.
+
+### 15.5. Ograniczenie definicji Sfery
+
+W wersji 0.1 Sfera posiada status przejściowy.
+
+Jej obecna definicja zależy od segmentacji godzinowej i nie została jeszcze wyprowadzona wyłącznie z pełnego modelu geometrycznego.
+
+W związku z tym:
+
+* Sfera jest częścią użyteczną notacji,
+* Sfera nie jest jeszcze elementem ostatecznie domkniętym matematycznie,
+* przyszłe wersje muszą rozstrzygnąć, czy Sfera wynika z topologii modelu, z osi odniesienia, czy z dodatkowej warstwy interpretacyjnej.
+
+### 15.6. Ograniczenie definicji Trendu
+
+W wersji 0.1 Trend posiada podwójny status:
+
+* jako trend obserwacyjny może być liczony między kolejnymi próbkami,
+* jako trend lokalny nie został jeszcze w pełni zdefiniowany analitycznie.
+
+Oznacza to, że Trend nie jest jeszcze całkowicie niezależną własnością chwili, lecz częściowo zależy od sposobu próbkowania i obserwacji.
+
+### 15.7. Ograniczenie ontologiczne
+
+Wersja 0.1 nie rozstrzyga jeszcze jednoznacznie, czy Chronometria Ortogonalna ma być rozumiana jako:
+
+* alternatywna reprezentacja istniejącego czasu,
+* nowa klasa czasu relacyjnego,
+* teoria pomocnicza do reinterpretacji czasu zegarowego,
+* kandydat na autonomiczną skalę chronometryczną.
+
+Dokument celowo pozostawia tę kwestię częściowo otwartą, aby nie nadawać systemowi statusu szerszego, niż uzasadnia aktualny poziom formalizacji.
+
+### 15.8. Ograniczenie infrastrukturalne
+
+Wersja 0.1 nie definiuje:
+
+* protokołu synchronizacji sieciowej,
+* mechanizmu dystrybucji czasu ortogonalnego,
+* formatu interoperacyjności z systemami operacyjnymi,
+* warstwy zgodności z istniejącymi protokołami czasu.
+
+Dlatego system nie może być jeszcze traktowany jako zamiennik infrastrukturalny dla UTC, NTP ani pokrewnych standardów.
+
+### 15.9. Ograniczenie semantyczne
+
+W wersji 0.1 nie zostało jeszcze ostatecznie ustalone, czy jednostki takie jak `Orthos`, `Centi`, `Cykl` i `Sfera` mają charakter:
+
+* wyłącznie operacyjny,
+* częściowo ontologiczny,
+* w pełni formalno-aksjomatyczny.
+
+W szczególności `Centi` jest obecnie traktowane jako element reprezentacji liczby, a nie jako niezależna jednostka fundamentalna systemu.
+
+### 15.10. Pytania otwarte — rdzeń matematyczny
+
+Do najważniejszych pytań otwartych w warstwie matematycznej należą:
+
+1. Czy model powinien zostać uogólniony z tarczy 12-godzinnej do abstrakcyjnej przestrzeni fazowej?
+2. Czy istnieje głębsza definicja Sfery wynikająca bezpośrednio z topologii układu?
+3. Czy Trend lokalny można zdefiniować przez pochodną funkcji `Orth(T)` względem chwili bazowej?
+4. Czy możliwe jest wprowadzenie dodatkowych współrzędnych pozwalających zwiększyć odwracalność systemu?
+5. Czy istnieje kanoniczny zapis pełnego stanu ortogonalnego zachowujący więcej informacji źródłowej bez utraty elegancji notacyjnej?
+
+### 15.11. Pytania otwarte — rdzeń ontologiczny
+
+Do najważniejszych pytań ontologicznych należą:
+
+1. Czy stan ortogonalny jest tylko użyteczną miarą relacji, czy powinien być traktowany jako nowa podstawowa kategoria czasu?
+2. Czy Chronometria Ortogonalna opisuje czas, czy raczej strukturę jego reprezentacji?
+3. Czy oś 3–9 ma znaczenie konieczne, czy tylko konwencyjne?
+4. Czy system odkrywa relację obecną w czasie, czy tworzy nowy porządek interpretacyjny nakładany na czas klasyczny?
+5. Czy relacyjność i ortogonalność mogą zostać uznane za bardziej fundamentalne niż tradycyjny podział minutowy?
+
+### 15.12. Pytania otwarte — warstwa praktyczna
+
+Do najważniejszych pytań praktycznych należą:
+
+1. Jaka forma interfejsu najlepiej ujawnia logikę systemu użytkownikowi?
+2. Czy użytkownik powinien widzieć jednocześnie czas klasyczny i ortogonalny?
+3. Czy możliwe jest stworzenie serwera czasu ortogonalnego bez przedwczesnego wchodzenia w pełny protokół infrastrukturalny?
+4. Jak powinno wyglądać API czasu ortogonalnego?
+5. Czy projekt powinien rozwijać się najpierw jako biblioteka, demonstrator czy manifest naukowy?
+
+### 15.13. Roadmapa wersji 0.2
+
+Wersja 0.2 powinna dążyć do:
+
+* doprecyzowania definicji Sfery,
+* rozdzielenia Trendu obserwacyjnego i analitycznego,
+* rozszerzenia zestawu przypadków referencyjnych,
+* dopracowania formalnej relacji między Cyklem a pełnym stanem czasu,
+* ustalenia kanonicznej reprezentacji maszynowej.
+
+### 15.14. Roadmapa wersji 0.5
+
+Wersja 0.5 powinna dążyć do:
+
+* budowy biblioteki referencyjnej niezależnej od UI,
+* pełnego zestawu testów zgodności,
+* stabilnej notacji użytkowej i maszynowej,
+* demonstratora pokazującego równoległe działanie czasu klasycznego i ortogonalnego,
+* pierwszego dokumentu opisującego możliwość dystrybucji czasu ortogonalnego w sieci.
+
+### 15.15. Roadmapa wersji 1.0
+
+Wersja 1.0 powinna zostać osiągnięta dopiero wtedy, gdy spełnione zostaną łącznie następujące warunki:
+
+1. rdzeń matematyczny będzie formalnie domknięty,
+2. status Sfery i Trendu zostanie jednoznacznie określony,
+3. notacja będzie stabilna,
+4. implementacja referencyjna będzie publicznie dostępna,
+5. zestaw testów zgodności będzie kompletny,
+6. system będzie posiadał jasną deklarację swojego statusu ontologicznego i praktycznego.
+
+### 15.16. Wniosek rozwojowy
+
+Chronometria Ortogonalna w wersji 0.1 jest systemem o silnym rdzeniu koncepcyjnym i rosnącym stopniu formalizacji, ale nie jest jeszcze teorią domkniętą.
+
+Jej siłą jest spójny pomysł relacyjno-geometryczny.
+
+Jej najważniejszym zadaniem rozwojowym jest przejście od trafnej idei i działającego modelu do formalnie zamkniętej, niezależnej i interoperacyjnej chronometrii.
+
+## 16. Plan dalszej rozbudowy dokumentu
 
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
