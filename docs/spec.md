@@ -1296,8 +1296,182 @@ Jej siłą jest spójny pomysł relacyjno-geometryczny.
 
 Jej najważniejszym zadaniem rozwojowym jest przejście od trafnej idei i działającego modelu do formalnie zamkniętej, niezależnej i interoperacyjnej chronometrii.
 
-## 16. Plan dalszej rozbudowy dokumentu
+## 16. Status dokumentu, wersjonowanie i zasady publikacji
 
+### 16.1. Status dokumentu
+
+Niniejszy dokument ma status roboczej specyfikacji systemu Chronometrii Ortogonalnej w wersji 0.1.
+
+Oznacza to, że:
+
+* rdzeń koncepcyjny systemu został już sformułowany,
+* podstawowy model matematyczny został określony,
+* notacja i wymagania zgodności zostały zarysowane,
+* część elementów systemu nadal posiada status przejściowy lub eksploracyjny.
+
+W szczególności dotyczy to przede wszystkim:
+
+* pełnej definicji Sfery,
+* analitycznej definicji Trendu lokalnego,
+* statusu ontologicznego systemu jako autonomicznej skali czasu.
+
+### 16.2. Charakter normatywny i informacyjny
+
+W niniejszym dokumencie rozróżnia się dwa typy treści:
+
+#### 16.2.1. Treści normatywne
+
+Treści normatywne określają, co implementacja zgodna z wersją 0.1 musi albo powinna robić.
+
+Do treści normatywnych należą w szczególności:
+
+* definicje rdzenia matematycznego,
+* wzory obliczeniowe,
+* zasady redukcji ortogonalnej,
+* definicje `Orth(T)`, `Orth_int(T)` i `Centi(T)`,
+* minimalne wymagania zgodności,
+* przypadki referencyjne,
+* podstawowe reguły notacji.
+
+#### 16.2.2. Treści informacyjne
+
+Treści informacyjne służą wyjaśnieniu, interpretacji, umiejscowieniu systemu w szerszym kontekście oraz wskazaniu kierunków rozwoju.
+
+Do treści informacyjnych należą między innymi:
+
+* komentarze ontologiczne,
+* rozważania porównawcze,
+* pytania otwarte,
+* roadmapa teorii,
+* rekomendacje architektoniczne dotyczące przyszłych implementacji.
+
+### 16.3. Zasady interpretacji zapisów
+
+W kolejnych wydaniach specyfikacji zaleca się używanie następujących operatorów interpretacyjnych:
+
+* `musi` — wymaganie bezwzględne,
+* `powinno` — wymaganie silnie zalecane,
+* `może` — zachowanie dopuszczalne opcjonalnie,
+* `nie może` — zachowanie niedopuszczalne.
+
+Jeżeli implementacja odstępuje od zapisów oznaczonych jako `musi`, nie może deklarować pełnej zgodności z wersją dokumentu, do której zapis się odnosi.
+
+### 16.4. Zasady wersjonowania
+
+Chronometria Ortogonalna powinna być rozwijana zgodnie z jawnym systemem wersjonowania dokumentu.
+
+Zaleca się następujący model:
+
+* `0.x` — etap eksploracyjny i formacyjny,
+* `1.0` — pierwsza wersja formalnie domknięta,
+* `1.x` — wersje zgodne wstecznie, rozszerzające system,
+* `2.0` — wersja wprowadzająca zmianę niezgodną wstecznie w rdzeniu systemu.
+
+Wersje z zakresu `0.x` mogą zawierać elementy przejściowe, o ile ich status jest jasno oznaczony.
+
+### 16.5. Zasady zmian między wersjami
+
+Każda nowa wersja dokumentu powinna jawnie określać:
+
+1. które elementy zostały dodane,
+2. które elementy zostały doprecyzowane,
+3. które elementy zmieniły status z roboczego na normatywny,
+4. które elementy utraciły ważność,
+5. czy dana zmiana narusza zgodność wsteczną.
+
+Zaleca się prowadzenie sekcji typu „Zmiany względem poprzedniej wersji” już od wersji 0.2.
+
+### 16.6. Zgodność wsteczna
+
+W miarę rozwoju systemu należy dążyć do zachowania zgodności wstecznej w następujących warstwach:
+
+* rdzeń matematyczny,
+* podstawowa notacja użytkowa,
+* reprezentacja maszynowa pól podstawowych,
+* przykłady referencyjne.
+
+Odstępstwo od zgodności wstecznej powinno być traktowane jako decyzja wyjątkowa i wymagać nowej wersji głównej dokumentu.
+
+### 16.7. Zasady publikacji implementacji
+
+Implementacje publiczne odwołujące się do Chronometrii Ortogonalnej powinny:
+
+* wskazywać wersję specyfikacji, z którą są zgodne,
+* rozróżniać zgodność obliczeniową od eksperymentalnych rozszerzeń,
+* jawnie deklarować własne modyfikacje względem dokumentu,
+* unikać sugerowania pełnej zgodności, jeśli korzystają z nieustabilizowanych elementów systemu.
+
+### 16.8. Zasady cytowania dokumentu
+
+W publikacjach technicznych, materiałach projektowych oraz dokumentacji implementacji zaleca się odwoływanie do dokumentu w formie:
+
+`Chronometria Ortogonalna — Specyfikacja systemu czasu, wersja 0.1`.
+
+W przypadku cytowania fragmentów dotyczących zgodności implementacyjnej należy dodatkowo wskazywać rozdział lub sekcję.
+
+### 16.9. Zasady publikacji przyszłych standardów pochodnych
+
+Jeżeli w przyszłości powstaną dokumenty pochodne, takie jak:
+
+* standard notacji sieciowej,
+* specyfikacja API,
+* protokół dystrybucji czasu ortogonalnego,
+* standard zegara ortogonalnego,
+
+powinny one być publikowane jako dokumenty podrzędne wobec niniejszej specyfikacji rdzeniowej.
+
+Oznacza to, że rdzeń matematyczny i definicyjny powinien pozostać dokumentem nadrzędnym.
+
+### 16.10. Kierunek publikacji projektu
+
+Chronometria Ortogonalna powinna rozwijać się równolegle w trzech kanałach:
+
+1. jako dokument specyfikacyjny,
+2. jako implementacja referencyjna,
+3. jako demonstrator pokazujący działanie systemu.
+
+Publikowanie samej warstwy wizualnej bez rdzenia matematycznego grozi zredukowaniem systemu do roli estetycznej ciekawostki.
+
+Publikowanie samej teorii bez demonstratora grozi z kolei utratą czytelności i siły oddziaływania.
+
+### 16.11. Kryterium przejścia z wersji roboczej do stabilnej
+
+Dokument może zostać uznany za stabilny dopiero wtedy, gdy:
+
+1. definicja Sfery zostanie domknięta,
+2. Trend lokalny zostanie określony formalnie,
+3. przypadki referencyjne obejmą pełniejszy zakres czasu wejściowego,
+4. implementacja referencyjna przejdzie jawnie opublikowany zestaw testów,
+5. status ontologiczny systemu zostanie określony w sposób bardziej precyzyjny.
+
+### 16.12. Wniosek końcowy
+
+Wersja 0.1 stanowi pierwszy poważny krok w kierunku przekształcenia Chronometrii Ortogonalnej z autorskiej idei w system możliwy do formalnego opisu, implementacji i dalszej weryfikacji.
+
+Nie jest to jeszcze standard domknięty.
+
+Jest to jednak wystarczająco rozwinięty fundament, aby rozpocząć równoległe prace nad:
+
+* dopracowaniem teorii,
+* budową implementacji referencyjnej,
+* przygotowaniem publicznej prezentacji systemu.
+
+## 17. Plan dalszej rozbudowy dokumentu
+
+W kolejnych wersjach dokument może zostać rozszerzony o:
+
+* formalny aneks z dowodami i własnościami funkcji,
+* tablice konwersji dla wybranych przedziałów czasu,
+* pełny zestaw testów zgodności,
+* aneks terminologiczny polsko-angielski,
+* rozdział o architekturze biblioteki referencyjnej,
+* rozdział o protokołach publikacji i dystrybucji czasu ortogonalnego.
+
+## 18. Teza zamykająca wersję 0.1
+
+Chronometria Ortogonalna proponuje relacyjno-geometryczne ujęcie czasu, w którym kluczową rolę odgrywa nie arbitralna numeracja podziałki, lecz odchylenie od stanu ortogonalnego w przestrzeni cyklicznej.
+
+Wersja 0.1 nie kończy tej teorii, lecz ustanawia jej pierwszy formalny język.
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
 * formalne definicje matematyczne i wzory,
