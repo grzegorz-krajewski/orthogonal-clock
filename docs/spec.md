@@ -744,7 +744,393 @@ Czas Ortogonalny odpowiada przede wszystkim na pytanie: „jaki jest relacyjny s
 
 Oba systemy opisują tę samą chwilę bazową, lecz czynią to za pomocą odmiennych zasad organizacji informacji.
 
-## 13. Plan dalszej rozbudowy dokumentu
+## 13. Notacja i format zapisu
+
+### 13.1. Cel notacji
+
+Notacja Czasu Ortogonalnego służy do jednoznacznego przedstawiania stanu `OT(T)` w formie czytelnej dla człowieka oraz możliwej do przetwarzania maszynowego.
+
+Dobra notacja powinna spełniać równocześnie cztery warunki:
+
+1. zachowywać podstawowe składniki stanu ortogonalnego,
+2. być zwięzła i możliwa do codziennego użycia,
+3. nadawać się do serializacji w systemach informatycznych,
+4. umożliwiać wersje skrócone i rozszerzone bez utraty spójności.
+
+### 13.2. Składniki stanu notacyjnego
+
+W wersji 0.1 pełny stan ortogonalny może zawierać następujące pola:
+
+* `S` — Sfera,
+* `C` — Cykl,
+* `Orth` — pełna wartość czasu ortogonalnego,
+* `Oi` — część całkowita `Orth`,
+* `Ce` — część setna reprezentacji,
+* `Tr` — Trend,
+* `B` — opcjonalna informacja o chwili bazowej lub skali wejściowej.
+
+### 13.3. Notacja pełna
+
+Notacja pełna ma charakter opisowy i przeznaczona jest do dokumentacji, analizy, publikacji oraz interfejsów eksperckich.
+
+Forma ogólna:
+
+`OT[S=<sfera>; C=<cykl>; Orth=<wartość>; Oi=<część_całkowita>; Ce=<centi>; Tr=<trend>]`
+
+Przykład:
+
+`OT[S=+; C=3; Orth=0.00; Oi=0; Ce=00; Tr=↑]`
+
+Notacja pełna może zostać rozszerzona o pole źródłowe:
+
+`OT[S=+; C=3; Orth=0.00; Oi=0; Ce=00; Tr=↑; B=UTC:2026-04-12T03:00:00Z]`
+
+### 13.4. Notacja standardowa użytkowa
+
+Notacja standardowa użytkowa służy do codziennego prezentowania stanu czasu ortogonalnego człowiekowi.
+
+Forma ogólna:
+
+`[<sfera>] C<cykl> O<Oi>.<Ce> <trend>`
+
+Przykład:
+
+`[+] C3 O0.00 ↑`
+
+lub:
+
+`[-] C5 O60.00 ↓`
+
+W tej formie:
+
+* sfera pozostaje znakiem prefiksowym,
+* cykl jest oznaczany literą `C`,
+* wartość Orthos oznaczana jest literą `O`,
+* trend pozostaje symbolem końcowym.
+
+### 13.5. Notacja skrócona
+
+Notacja skrócona przeznaczona jest dla interfejsów o ograniczonej przestrzeni, wizualizacji, tarcz i widgetów.
+
+Forma ogólna:
+
+`<sfera><cykl>:<Oi>.<Ce><trend>`
+
+Przykład:
+
+`+3:0.00↑`
+
+lub:
+
+`-5:60.00↓`
+
+W notacji skróconej zakłada się znajomość kontekstu systemu przez użytkownika.
+
+### 13.6. Notacja minimalistyczna
+
+W szczególnych zastosowaniach dopuszcza się notację ograniczoną do samej wartości ortogonalnej:
+
+`O<Oi>.<Ce>`
+
+Przykład:
+
+`O30.25`
+
+Notacja minimalistyczna nie jest wystarczająca do pełnej identyfikacji stanu, ponieważ pomija Sferę, Cykl i Trend.
+
+Może być stosowana wyłącznie tam, gdzie kontekst jest dostarczany innym kanałem.
+
+### 13.7. Notacja maszynowa
+
+Dla zastosowań informatycznych zaleca się zapis strukturalny.
+
+Przykładowa reprezentacja JSON:
+
+```json
+{
+  "system": "orthogonal-time",
+  "version": "0.1",
+  "sphere": "+",
+  "cycle": 3,
+  "orth": 0.0,
+  "orth_int": 0,
+  "centi": 0,
+  "trend": "up",
+  "base": {
+    "scale": "UTC",
+    "value": "2026-04-12T03:00:00Z"
+  }
+}
+```
+
+W przypadku braku źródła chwili bazowej pole `base` może zostać pominięte.
+
+### 13.8. Trend w notacji
+
+Dopuszcza się następujące symbole trendu:
+
+* `↑` — trend rosnący,
+* `↓` — trend malejący,
+* `=` — trend stały,
+* `?` — trend nieokreślony lub nieobliczony.
+
+W zapisie maszynowym zaleca się formy tekstowe:
+
+* `up`,
+* `down`,
+* `steady`,
+* `unknown`.
+
+### 13.9. Sfera w notacji
+
+W wersji 0.1 dopuszcza się dwa symbole Sfery:
+
+* `+` dla sfery dodatniej,
+* `-` dla sfery ujemnej.
+
+W zapisie maszynowym dopuszcza się również formy rozwinięte:
+
+* `positive`,
+* `negative`.
+
+Jeżeli w przyszłych wersjach system zostanie rozszerzony o dodatkowe klasy topologiczne, notacja musi zachować zgodność wsteczną dla podstawowych oznaczeń `+` i `-`.
+
+### 13.10. Cykl w notacji
+
+Cykl zapisuje się jako liczbę całkowitą z zakresu wynikającego z modelu podstawowego.
+
+W wersji 0.1 dla modelu 12-godzinnego przyjmuje się:
+
+`C(T) ∈ {0,1,2,3,4,5,6,7,8,9,10,11}`
+
+Dopuszczalne są dwa warianty prezentacji:
+
+* wariant techniczny: `0–11`,
+* wariant użytkowy: `1–12` z jawnym określeniem reguły mapowania.
+
+W dokumentacji specyfikacyjnej zaleca się pozostanie przy wariancie technicznym `0–11` dla uniknięcia niejednoznaczności.
+
+### 13.11. Zasady zaokrąglania i prezentacji
+
+Wartość `Orth(T)` jest wielkością rzeczywistą.
+
+W prezentacji człowiekowi dopuszcza się:
+
+* zapis z dwoma miejscami po przecinku,
+* zapis z obcięciem do dwóch miejsc po przecinku,
+* zapis z klasycznym zaokrągleniem do dwóch miejsc po przecinku,
+* zapis z większą precyzją dla zastosowań analitycznych.
+
+Każda implementacja musi jawnie deklarować używaną regułę prezentacji.
+
+Dla testów zgodności zaleca się rozdzielenie:
+
+* wartości obliczeniowej `Orth(T)`,
+* wartości prezentacyjnej `Orth_display(T)`.
+
+### 13.12. Zgodność notacyjna
+
+Implementacja zgodna z wersją 0.1 powinna:
+
+1. umożliwiać wygenerowanie co najmniej jednej notacji czytelnej dla człowieka,
+2. umożliwiać wygenerowanie jednej reprezentacji maszynowej,
+3. zachowywać spójność między `Orth`, `Oi` i `Ce`,
+4. jednoznacznie oznaczać status trendu,
+5. nie mieszać warstwy źródłowej z warstwą ortogonalną bez jawnych oznaczeń.
+
+### 13.13. Rekomendacja domyślna
+
+W wersji 0.1 jako domyślną notację użytkową rekomenduje się:
+
+`[<sfera>] C<cykl> O<Oi>.<Ce> <trend>`
+
+Przykład:
+
+`[+] C3 O0.00 ↑`
+
+Natomiast jako domyślną notację maszynową rekomenduje się strukturę JSON zawierającą co najmniej pola:
+
+* `sphere`,
+* `cycle`,
+* `orth`,
+* `orth_int`,
+* `centi`,
+* `trend`.
+
+## 14. Zgodność implementacji i wymagania referencyjne
+
+### 14.1. Cel rozdziału
+
+Celem niniejszego rozdziału jest określenie minimalnych warunków, jakie musi spełnić implementacja Chronometrii Ortogonalnej, aby mogła zostać uznana za zgodną ze specyfikacją w wersji 0.1.
+
+Zgodność implementacji oznacza zgodność z:
+
+* definicjami matematycznymi,
+* regułami notacji,
+* wymaganiami dotyczącymi reprezentacji,
+* przykładami referencyjnymi,
+* zasadami jawnego deklarowania ograniczeń i przyjętych uproszczeń.
+
+### 14.2. Klasy implementacji
+
+W wersji 0.1 rozróżnia się następujące klasy implementacji:
+
+#### 14.2.1. Implementacja obliczeniowa
+
+Implementacja, która potrafi dla danej chwili bazowej obliczyć co najmniej wartość `Orth(T)` oraz jej podstawowe składniki.
+
+#### 14.2.2. Implementacja prezentacyjna
+
+Implementacja, która potrafi zaprezentować stan czasu ortogonalnego człowiekowi, lecz może korzystać z zewnętrznego silnika obliczeniowego.
+
+#### 14.2.3. Implementacja referencyjna
+
+Implementacja, która realizuje pełny rdzeń matematyczny, wspiera rekomendowaną notację i przechodzi zestaw testów referencyjnych określonych w tej specyfikacji.
+
+#### 14.2.4. Implementacja eksperymentalna
+
+Implementacja rozszerzająca model podstawowy o dodatkowe elementy interpretacyjne, wizualne lub protokołowe, które nie są jeszcze częścią wersji 0.1.
+
+### 14.3. Wymagania minimalne dla zgodności obliczeniowej
+
+Aby implementacja była zgodna obliczeniowo z wersją 0.1, musi:
+
+1. przyjmować chwilę bazową `T` lub dane pozwalające ją jednoznacznie wyznaczyć,
+2. obliczać `H(T)` zgodnie z definicją specyfikacji,
+3. obliczać `M(T)` zgodnie z definicją specyfikacji,
+4. stosować redukcję `R(x) = x mod 180`,
+5. obliczać `D0(T)` jako bezwzględną różnicę zredukowanych kątów,
+6. obliczać `D(T) = min(D0(T), 180 - D0(T))`,
+7. obliczać `O(T) = |90 - D(T)|`,
+8. zwracać `Orth(T)` jako wartość równą `O(T)`.
+
+Brak któregokolwiek z powyższych elementów uniemożliwia uznanie implementacji za zgodną z rdzeniem matematycznym systemu.
+
+### 14.4. Wymagania minimalne dla zgodności reprezentacyjnej
+
+Aby implementacja była zgodna reprezentacyjnie z wersją 0.1, musi:
+
+1. zwracać co najmniej jedną notację czytelną dla człowieka albo strukturę maszynową,
+2. zachowywać spójność pomiędzy `Orth(T)`, `Orth_int(T)` i `Centi(T)`,
+3. jawnie oznaczać zastosowaną regułę zaokrąglania lub obcinania,
+4. nie prezentować trendu jako wartości pewnej, jeśli nie został on obliczony,
+5. nie mieszać chwili bazowej z czasem ortogonalnym bez jawnego rozróżnienia pól.
+
+### 14.5. Wymagania minimalne dla zgodności referencyjnej
+
+Implementacja referencyjna powinna dodatkowo:
+
+1. wspierać notację rekomendowaną `[<sfera>] C<cykl> O<Oi>.<Ce> <trend>`,
+2. wspierać reprezentację maszynową z polami określonymi w rozdziale 13,
+3. przechodzić zestaw przykładów referencyjnych z rozdziału 11,
+4. deklarować przyjętą skalę chwili bazowej,
+5. deklarować, czy sekundy są uwzględniane,
+6. deklarować sposób wyznaczania Sfery,
+7. deklarować sposób wyznaczania Trendu.
+
+### 14.6. Wymagania dotyczące chwili bazowej
+
+Każda implementacja musi jawnie określić, z jakiej skali wejściowej korzysta.
+
+Dopuszczalne są między innymi:
+
+* lokalny czas cywilny,
+* UTC,
+* Unix time,
+* własna skala wejściowa pod warunkiem, że można ją jednoznacznie przekształcić do `h`, `m`, `s`.
+
+Implementacja nie może ukrywać tej decyzji, ponieważ wybór skali wejściowej wpływa na interpretację wyniku.
+
+### 14.7. Wymagania dotyczące precyzji
+
+Implementacja musi rozróżniać:
+
+* precyzję obliczeniową,
+* precyzję prezentacyjną.
+
+Zaleca się, aby wewnętrzne obliczenia były prowadzone z większą dokładnością niż końcowa prezentacja.
+
+Obcięcie lub zaokrąglenie do dwóch miejsc po przecinku nie może zmieniać logiki obliczeniowej rdzenia systemu.
+
+### 14.8. Status Sfery i Trendu
+
+W wersji 0.1:
+
+* Sfera ma status częściowo przejściowy,
+* Trend ma status częściowo zależny od sposobu obserwacji.
+
+Dlatego implementacja może być zgodna z rdzeniem matematycznym nawet wtedy, gdy:
+
+* nie udostępnia Sfery,
+* oznacza Trend jako `unknown`,
+* korzysta z roboczej definicji Sfery i obserwacyjnej definicji Trendu.
+
+Jednak implementacja nie może przedstawiać tych elementów jako ostatecznie domkniętych, jeśli korzysta z wersji roboczych.
+
+### 14.9. Testy referencyjne minimalne
+
+Każda implementacja zgodna z wersją 0.1 powinna poprawnie odtwarzać co najmniej następujące przypadki:
+
+1. `12:00:00 -> Orth = 90`
+2. `03:00:00 -> Orth = 0`
+3. `06:00:00 -> Orth = 90`
+4. `09:00:00 -> Orth = 0`
+5. `01:00:00 -> Orth = 60`
+6. `02:00:00 -> Orth = 30`
+7. `04:00:00 -> Orth = 30`
+8. `05:00:00 -> Orth = 60`
+
+Zaleca się również rozszerzenie testów o wartości z sekundami i o chwile niepełnogodzinne.
+
+### 14.10. Niezgodności krytyczne
+
+Za niezgodność krytyczną uznaje się między innymi:
+
+1. brak redukcji do 180 stopni,
+2. użycie niewłaściwej definicji różnicy kątowej,
+3. użycie wartości innej niż `|90 - D(T)|` jako podstawy `Orth(T)`,
+4. niespójność między wynikiem liczbowym a jego reprezentacją tekstową,
+5. przypisywanie pełnej zgodności wersji 0.1 przy pominięciu wymogów matematycznych.
+
+### 14.11. Niezgodności dopuszczalne warunkowo
+
+Dopuszczalne warunkowo są różnice dotyczące:
+
+* formatu wyświetlania,
+* kolejności pól w reprezentacji maszynowej,
+* obecności lub braku pola `base`,
+* wyboru dokładności prezentacyjnej,
+* sposobu oznaczania trendu, o ile jest on jasno zadeklarowany.
+
+### 14.12. Deklaracja zgodności
+
+Implementacja, która chce powoływać się na zgodność z wersją 0.1, powinna zawierać deklarację w rodzaju:
+
+`This implementation conforms to Orthogonal Time Specification v0.1 in its computational core.`
+
+lub w wersji rozszerzonej:
+
+`This implementation conforms to Orthogonal Time Specification v0.1 in its computational and representational layers, with experimental handling of sphere and trend.`
+
+W dokumentacji polskiej dopuszcza się odpowiedniki:
+
+`Ta implementacja jest zgodna z wersją 0.1 Specyfikacji Czasu Ortogonalnego w warstwie obliczeniowej.`
+
+oraz:
+
+`Ta implementacja jest zgodna z wersją 0.1 Specyfikacji Czasu Ortogonalnego w warstwie obliczeniowej i reprezentacyjnej, z eksperymentalną obsługą Sfery i Trendu.`
+
+### 14.13. Rekomendacja dla implementacji wzorcowej
+
+Implementacja wzorcowa powinna:
+
+* przyjmować chwilę bazową jako jawny argument,
+* nie opierać obliczeń wyłącznie na stanie globalnym programu,
+* rozdzielać funkcje obliczeniowe od prezentacyjnych,
+* udostępniać testy jednostkowe dla przypadków referencyjnych,
+* pozwalać na rozszerzenie o kolejne wersje specyfikacji bez łamania zgodności wstecznej.
+
+## 15. Plan dalszej rozbudowy dokumentu
 
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
