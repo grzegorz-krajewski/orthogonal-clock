@@ -1,4 +1,3 @@
-
 # Chronometria Ortogonalna
 
 ## Specyfikacja systemu czasu — wersja 0.1 (szkic roboczy)
@@ -170,7 +169,193 @@ Czas ortogonalny jest osadzony w strukturze okresowej, której własności wynik
 
 ---
 
-## 9. Plan dalszej rozbudowy dokumentu
+## 9. Model formalny i definicje matematyczne
+
+### 9.1. Chwila bazowa
+
+Niech chwila bazowa będzie oznaczona przez symbol `T`.
+
+Chwila bazowa jest elementem przyjętej skali czasu źródłowego i stanowi wejście do procesu konwersji do Czasu Ortogonalnego.
+
+W wersji 0.1 specyfikacja dopuszcza trzy klasy chwil bazowych:
+
+1. czas lokalny cywilny,
+2. czas uniwersalny skoordynowany (UTC),
+3. znacznik czasu typu Unix.
+
+Wewnętrzny model Chronometrii Ortogonalnej nie zależy od nazwy skali wejściowej, lecz od możliwości jednoznacznego przekształcenia chwili bazowej do reprezentacji kątowej.
+
+### 9.2. Składowe chwili bazowej
+
+Dla potrzeb podstawowego modelu przyjmuje się, że chwila bazowa `T` może zostać rozpisana na:
+
+* godzinę `h`,
+* minutę `m`,
+* sekundę `s`.
+
+W przypadku gdy sekunda nie jest dostępna, przyjmuje się `s = 0`.
+
+Dla modelu 12-godzinnego definiuje się godzinę zredukowaną:
+
+`h12 = h mod 12`
+
+### 9.3. Reprezentacja kątowa
+
+Chronometria Ortogonalna operuje na dwóch kątach pochodnych:
+
+#### 9.3.1. Kąt godzinowy
+
+Kąt godzinowy `H(T)` jest funkcją chwili bazowej i wyraża położenie wskazania godzinowego:
+
+`H(T) = 30 * h12 + 0.5 * m + (1/120) * s`
+
+#### 9.3.2. Kąt minutowy
+
+Kąt minutowy `M(T)` jest funkcją chwili bazowej i wyraża położenie wskazania minutowego:
+
+`M(T) = 6 * m + 0.1 * s`
+
+Oba kąty wyrażane są w stopniach.
+
+### 9.4. Redukcja ortogonalna
+
+Niech funkcja redukcji półobrotu będzie dana wzorem:
+
+`R(x) = x mod 180`
+
+Wtedy zredukowane kąty ortogonalne przyjmują postać:
+
+`Hr(T) = R(H(T))`
+
+`Mr(T) = R(M(T))`
+
+Redukcja do 180 stopni usuwa równoważności pełnego obrotu nieistotne z punktu widzenia relacji ortogonalnej.
+
+### 9.5. Różnica kątowa
+
+Definiuje się pierwotną różnicę kątową jako:
+
+`D0(T) = |Hr(T) - Mr(T)|`
+
+Ponieważ relacja ortogonalna jest symetryczna względem 90 stopni, definiuje się różnicę zsymetryzowaną:
+
+`D(T) = min(D0(T), 180 - D0(T))`
+
+Wynika stąd, że:
+
+`0 <= D(T) <= 90`
+
+### 9.6. Odchylenie ortogonalne
+
+Definiuje się odchylenie ortogonalne `O(T)` jako odległość różnicy zsymetryzowanej od stanu idealnej ortogonalności:
+
+`O(T) = |90 - D(T)|`
+
+Zatem:
+
+`0 <= O(T) <= 90`
+
+Wartość `O(T) = 0` oznacza idealny stan ortogonalny.
+
+Wartość `O(T) = 90` oznacza maksymalne oddalenie od ortogonalności w obrębie przestrzeni zsymetryzowanej.
+
+### 9.7. Wartość czasu ortogonalnego
+
+Podstawową skalarną wartością Czasu Ortogonalnego jest funkcja:
+
+`Orth(T) = O(T)`
+
+W wersji podstawowej `Orth(T)` jest wielkością rzeczywistą wyrażoną w stopniach ortogonalnych.
+
+### 9.8. Rozbicie reprezentacyjne
+
+Dla potrzeb zapisu i odczytu definiuje się:
+
+`Orth_int(T) = floor(Orth(T))`
+
+`Centi(T) = floor((Orth(T) - Orth_int(T)) * 100)`
+
+gdzie:
+
+* `Orth_int(T)` oznacza część całkowitą jednostki Orthos,
+* `Centi(T)` oznacza dwucyfrową część setną reprezentacji.
+
+Wersja 0.1 traktuje `Centi` jako element notacyjny reprezentacji liczby rzeczywistej, a nie jako niezależną jednostkę bazową systemu.
+
+### 9.9. Cykl
+
+Dla chwili bazowej `T` definiuje się cykl podstawowy:
+
+`C(T) = h mod 12`
+
+Wartość `C(T)` identyfikuje położenie chwili w strukturze 12-godzinnej.
+
+W kolejnych wersjach specyfikacji zostanie rozstrzygnięte, czy Cykl ma być wyłącznie etykietą fazową, czy składnikiem formalnego indeksu czasu ortogonalnego.
+
+### 9.10. Sfera
+
+W wersji 0.1 definiuje się sferę roboczą jako klasyfikację binarną zależną od położenia godzinowego względem osi strukturalnej systemu.
+
+Dla uproszczonego modelu implementacyjnego:
+
+* jeśli `3 <= h12 < 9`, to `S(T) = [-]`,
+* w przeciwnym razie `S(T) = [+]`.
+
+Definicja ta ma status przejściowy.
+
+W kolejnych wersjach zostanie zastąpiona definicją w pełni geometryczną, niezależną od prostego warunku godzinowego.
+
+### 9.11. Trend
+
+Trend opisuje kierunek zmiany wartości czasu ortogonalnego.
+
+W wersji 0.1 rozróżnia się dwa typy trendu:
+
+#### 9.11.1. Trend obserwacyjny
+
+Dla dwóch kolejnych chwil obserwacji `T1` i `T2`, gdzie `T2 > T1`, definiuje się:
+
+* trend rosnący, gdy `Orth(T2) > Orth(T1)`,
+* trend malejący, gdy `Orth(T2) < Orth(T1)`,
+* trend stały, gdy `Orth(T2) = Orth(T1)`.
+
+#### 9.11.2. Trend lokalny
+
+Trend lokalny jest własnością funkcji `Orth(T)` w otoczeniu chwili `T` i w przyszłych wersjach powinien być definiowany przez analizę przyrostu lub pochodnej względem czasu bazowego.
+
+### 9.12. Pełny stan Czasu Ortogonalnego
+
+Pełny stan czasu ortogonalnego dla chwili `T` może być zapisany jako uporządkowana struktura:
+
+`OT(T) = (S(T), C(T), Orth(T), Orth_int(T), Centi(T), Trend)`
+
+W zależności od zastosowania dopuszcza się zapis pełny lub skrócony.
+
+## 10. Własności podstawowe modelu
+
+### 10.1. Ograniczoność
+
+Funkcja `Orth(T)` jest ograniczona i przyjmuje wartości z przedziału domkniętego `[0, 90]`.
+
+### 10.2. Okresowość
+
+Model podstawowy jest okresowy względem struktury 12-godzinnej wynikającej z ruchu wskazania godzinowego.
+
+### 10.3. Symetria
+
+Redukcja do przestrzeni 180 stopni oraz symetryzacja różnicy kątowej sprawiają, że model identyfikuje klasy stanów równoważnych względem półobrotu.
+
+### 10.4. Centralność ortogonalności
+
+Stan ortogonalny pełni funkcję punktu odniesienia, wobec którego definiowana jest wartość czasu ortogonalnego.
+
+### 10.5. Wielowartościowość odwrotna
+
+Nie gwarantuje się, że odwzorowanie z czasu klasycznego do czasu ortogonalnego jest odwracalne w sposób jednoznaczny.
+
+Różne chwile bazowe mogą prowadzić do tej samej wartości `Orth(T)`.
+
+## 11. Plan dalszej rozbudowy dokumentu
 
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
