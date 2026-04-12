@@ -1,10 +1,33 @@
 # Chronometria Ortogonalna
 
-## Specyfikacja systemu czasu — wersja 0.1 (szkic roboczy)
+## Specyfikacja systemu czasu — wersja 0.1
+
+### Wydanie robocze
+
+## Spis treści
+
+1. Wprowadzenie
+2. Cel dokumentu
+3. Zakres systemu
+4. Rozdzielenie pojęć
+5. Założenia ogólne
+6. Terminologia podstawowa
+7. Aksjomaty systemu
+8. Pytania rozstrzygające przed wersją 0.2
+9. Model formalny i definicje matematyczne
+10. Własności podstawowe modelu
+11. Przypadki graniczne, punkty szczególne i przykłady referencyjne
+12. Relacja do czasu klasycznego
+13. Notacja i format zapisu
+14. Zgodność implementacji i wymagania referencyjne
+15. Ograniczenia, pytania otwarte i roadmapa teorii
+16. Status dokumentu, wersjonowanie i zasady publikacji
+17. Plan dalszej rozbudowy dokumentu
+18. Teza zamykająca wersję 0.1
 
 ## Status dokumentu
 
-Dokument roboczy. Celem tej wersji jest oddzielenie rdzenia matematycznego systemu od warstwy reprezentacji, wizualizacji i implementacji programistycznej.
+Niniejszy dokument jest roboczą specyfikacją wersji 0.1. Celem tego wydania jest formalne oddzielenie rdzenia matematycznego systemu od warstwy reprezentacji, wizualizacji i implementacji programistycznej oraz ustanowienie wspólnego języka dla dalszego rozwoju teorii i implementacji.
 
 ---
 
@@ -15,6 +38,8 @@ Chronometria Ortogonalna jest propozycją alternatywnego systemu opisu czasu, w 
 W klasycznym modelu zegarowym czas jest odczytywany przez wartości przypisane arbitralnie do podziału tarczy. W Chronometrii Ortogonalnej odczyt wynika z relacji, napięcia i odchylenia geometrycznego względem stanu ortogonalnego. Oznacza to przejście od modelu indeksowego do modelu relacyjnego.
 
 Chronometria Ortogonalna nie jest na tym etapie próbą zastąpienia czasu fizycznego, atomowego ani urzędowego. Jest formalnym systemem reprezentacji czasu opartym na geometrii oraz kandydatem na niezależny model chronometryczny.
+
+Dokument ten ustanawia pierwszą spójną wersję języka, definicji i wymagań, które pozwalają traktować projekt nie jako samą intuicję, lecz jako rozwijający się system formalny.
 
 ---
 
@@ -27,6 +52,8 @@ Celem niniejszej specyfikacji jest:
 3. opisanie zasad konwersji z czasu bazowego do czasu ortogonalnego,
 4. ustanowienie pojęć, jednostek, notacji i własności systemu,
 5. przygotowanie podstaw pod implementacje referencyjne, narzędzia wizualne i przyszłe protokoły dystrybucji czasu ortogonalnego.
+
+Dokument ma charakter fundacyjny: jego zadaniem nie jest wyczerpanie wszystkich pytań, lecz ustanowienie rdzenia wystarczająco ścisłego, by dalsze prace mogły rozwijać się bez utraty spójności pojęciowej.
 
 ---
 
@@ -1472,6 +1499,8 @@ W kolejnych wersjach dokument może zostać rozszerzony o:
 Chronometria Ortogonalna proponuje relacyjno-geometryczne ujęcie czasu, w którym kluczową rolę odgrywa nie arbitralna numeracja podziałki, lecz odchylenie od stanu ortogonalnego w przestrzeni cyklicznej.
 
 Wersja 0.1 nie kończy tej teorii, lecz ustanawia jej pierwszy formalny język.
+
+Jeżeli kolejne wersje zachowają ścisłość rdzenia matematycznego, klarowność notacji i uczciwe rozróżnienie między teorią a interpretacją, Chronometria Ortogonalna może rozwinąć się z autorskiej idei w rozpoznawalny, implementowalny i dyskutowalny system chronometryczny.
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
 * formalne definicje matematyczne i wzory,
