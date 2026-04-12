@@ -355,7 +355,242 @@ Nie gwarantuje się, że odwzorowanie z czasu klasycznego do czasu ortogonalnego
 
 Różne chwile bazowe mogą prowadzić do tej samej wartości `Orth(T)`.
 
-## 11. Plan dalszej rozbudowy dokumentu
+## 11. Przypadki graniczne, punkty szczególne i przykłady referencyjne
+
+### 11.1. Zakres analizy
+
+Niniejszy rozdział opisuje szczególne klasy chwil bazowych, dla których model przyjmuje wartości skrajne, zerowe albo strukturalnie istotne.
+
+Celem rozdziału jest:
+
+* identyfikacja punktów idealnej ortogonalności,
+* identyfikacja punktów maksymalnego oddalenia od ortogonalności,
+* opisanie zachowania funkcji na granicach cyklu,
+* ustanowienie przykładów referencyjnych do testów zgodności implementacji.
+
+### 11.2. Stan idealnej ortogonalności
+
+Stan idealnej ortogonalności zachodzi wtedy i tylko wtedy, gdy:
+
+`D(T) = 90`
+
+co jest równoważne warunkowi:
+
+`O(T) = 0`
+
+oraz:
+
+`Orth(T) = 0`
+
+Interpretacja:
+
+* wskazania są względem siebie prostopadłe w przestrzeni zsymetryzowanej,
+* układ osiąga stan zerowego odchylenia ortogonalnego,
+* czas ortogonalny osiąga minimum globalne.
+
+### 11.3. Stan maksymalnego oddalenia od ortogonalności
+
+Stan maksymalnego oddalenia zachodzi wtedy, gdy:
+
+`D(T) = 0`
+
+co implikuje:
+
+`O(T) = 90`
+
+oraz:
+
+`Orth(T) = 90`
+
+Interpretacja:
+
+* wskazania pokrywają się w przestrzeni zredukowanej lub tworzą relację równoważną zerowej różnicy,
+* układ osiąga maksimum odchylenia względem ortogonalności.
+
+### 11.4. Chwile klasyczne o szczególnym znaczeniu strukturalnym
+
+Poniższe chwile klasyczne pełnią rolę punktów odniesienia dla analizy systemu.
+
+#### 11.4.1. Chwila 12:00:00
+
+Dla `h = 12`, `m = 0`, `s = 0`:
+
+* `h12 = 0`
+* `H(T) = 0`
+* `M(T) = 0`
+* `Hr(T) = 0`
+* `Mr(T) = 0`
+* `D(T) = 0`
+* `Orth(T) = 90`
+
+Chwila 12:00:00 jest punktem maksymalnego oddalenia od ortogonalności.
+
+#### 11.4.2. Chwila 6:00:00
+
+Dla `h = 6`, `m = 0`, `s = 0`:
+
+* `h12 = 6`
+* `H(T) = 180`
+* `M(T) = 0`
+* `Hr(T) = 0`
+* `Mr(T) = 0`
+* `D(T) = 0`
+* `Orth(T) = 90`
+
+Chwila 6:00:00 jest równoważna 12:00:00 w przestrzeni zredukowanej.
+
+#### 11.4.3. Chwila 3:00:00
+
+Dla `h = 3`, `m = 0`, `s = 0`:
+
+* `h12 = 3`
+* `H(T) = 90`
+* `M(T) = 0`
+* `Hr(T) = 90`
+* `Mr(T) = 0`
+* `D(T) = 90`
+* `Orth(T) = 0`
+
+Chwila 3:00:00 jest punktem idealnej ortogonalności.
+
+#### 11.4.4. Chwila 9:00:00
+
+Dla `h = 9`, `m = 0`, `s = 0`:
+
+* `h12 = 9`
+* `H(T) = 270`
+* `M(T) = 0`
+* `Hr(T) = 90`
+* `Mr(T) = 0`
+* `D(T) = 90`
+* `Orth(T) = 0`
+
+Chwila 9:00:00 jest równoważna 3:00:00 w przestrzeni zredukowanej.
+
+### 11.5. Klasy równoważności podstawowej
+
+Z uwagi na redukcję modulo 180 stopni oraz symetryzację różnicy, model podstawowy tworzy klasy równoważności chwil, które w czasie klasycznym są różne, ale w przestrzeni ortogonalnej mają tę samą wartość `Orth(T)`.
+
+Przykładowo:
+
+* 12:00 i 6:00 należą do tej samej klasy maksymalnego oddalenia,
+* 3:00 i 9:00 należą do tej samej klasy idealnej ortogonalności.
+
+Wynika stąd, że Chronometria Ortogonalna nie zachowuje pełnej jednoznaczności odwrotnego mapowania do czasu klasycznego.
+
+### 11.6. Zachowanie na granicy godzin i minut
+
+Funkcje `H(T)` oraz `M(T)` są ciągłe względem czasu bazowego, jeśli `T` traktowane jest jako wielkość ciągła.
+
+W konsekwencji także:
+
+* `Hr(T)` jest funkcją odcinkowo ciągłą,
+* `Mr(T)` jest funkcją odcinkowo ciągłą,
+* `D(T)` jest funkcją ciągłą,
+* `O(T)` jest funkcją ciągłą,
+* `Orth(T)` jest funkcją ciągłą.
+
+Nieciągłości mogą pojawić się wyłącznie na poziomie reprezentacji dyskretnej, na przykład przy obcinaniu części ułamkowej do `Orth_int(T)` i `Centi(T)`.
+
+### 11.7. Punkty krytyczne
+
+Punkty krytyczne modelu obejmują:
+
+1. minima globalne: chwile, dla których `Orth(T) = 0`,
+2. maksima globalne: chwile, dla których `Orth(T) = 90`,
+3. punkty przejścia przez ortogonalność,
+4. punkty przejścia przez pokrycie wskazań,
+5. granice klasyfikacji sferycznej, jeśli sfera pozostaje definiowana przez segmentację godzinową.
+
+### 11.8. Przykłady referencyjne
+
+Poniższe przykłady mają status referencyjny dla implementacji zgodnych z wersją 0.1 specyfikacji.
+
+#### Przykład A — 01:00:00
+
+* `h12 = 1`
+* `H(T) = 30`
+* `M(T) = 0`
+* `Hr(T) = 30`
+* `Mr(T) = 0`
+* `D0(T) = 30`
+* `D(T) = 30`
+* `Orth(T) = 60`
+
+#### Przykład B — 02:00:00
+
+* `h12 = 2`
+* `H(T) = 60`
+* `M(T) = 0`
+* `Hr(T) = 60`
+* `Mr(T) = 0`
+* `D0(T) = 60`
+* `D(T) = 60`
+* `Orth(T) = 30`
+
+#### Przykład C — 03:00:00
+
+* `h12 = 3`
+* `H(T) = 90`
+* `M(T) = 0`
+* `Hr(T) = 90`
+* `Mr(T) = 0`
+* `D0(T) = 90`
+* `D(T) = 90`
+* `Orth(T) = 0`
+
+#### Przykład D — 04:00:00
+
+* `h12 = 4`
+* `H(T) = 120`
+* `M(T) = 0`
+* `Hr(T) = 120`
+* `Mr(T) = 0`
+* `D0(T) = 120`
+* `D(T) = 60`
+* `Orth(T) = 30`
+
+#### Przykład E — 05:00:00
+
+* `h12 = 5`
+* `H(T) = 150`
+* `M(T) = 0`
+* `Hr(T) = 150`
+* `Mr(T) = 0`
+* `D0(T) = 150`
+* `D(T) = 30`
+* `Orth(T) = 60`
+
+#### Przykład F — 06:00:00
+
+* `h12 = 6`
+* `H(T) = 180`
+* `M(T) = 0`
+* `Hr(T) = 0`
+* `Mr(T) = 0`
+* `D0(T) = 0`
+* `D(T) = 0`
+* `Orth(T) = 90`
+
+### 11.9. Symetria pierwszego półcyklu
+
+Dla pełnych godzin od 12:00 do 6:00 model wykazuje następującą strukturę wartości:
+
+* 12:00 → 90
+* 1:00 → 60
+* 2:00 → 30
+* 3:00 → 0
+* 4:00 → 30
+* 5:00 → 60
+* 6:00 → 90
+
+Struktura ta ujawnia symetrię wokół punktu ortogonalnego 3:00 oraz maksimum w punktach zgodnych lub zredukowanie zgodnych.
+
+### 11.10. Znaczenie testowe przykładów referencyjnych
+
+Każda implementacja zgodna z wersją 0.1 musi zwracać wartości zgodne z przykładami referencyjnymi dla chwil pełnogodzinnych opisanych w niniejszym rozdziale, z uwzględnieniem przyjętej reguły zaokrąglania i reprezentacji części ułamkowej.
+
+## 12. Plan dalszej rozbudowy dokumentu
 
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
