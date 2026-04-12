@@ -590,7 +590,161 @@ Struktura ta ujawnia symetrię wokół punktu ortogonalnego 3:00 oraz maksimum w
 
 Każda implementacja zgodna z wersją 0.1 musi zwracać wartości zgodne z przykładami referencyjnymi dla chwil pełnogodzinnych opisanych w niniejszym rozdziale, z uwzględnieniem przyjętej reguły zaokrąglania i reprezentacji części ułamkowej.
 
-## 12. Plan dalszej rozbudowy dokumentu
+## 12. Relacja do czasu klasycznego
+
+### 12.1. Charakter odwzorowania
+
+Chronometria Ortogonalna nie zastępuje w wersji 0.1 klasycznego czasu cywilnego, lecz definiuje alternatywne odwzorowanie chwili bazowej do relacyjnej przestrzeni geometrycznej.
+
+Odwzorowanie to ma postać:
+
+`F: T -> OT(T)`
+
+gdzie `T` jest chwilą bazową w przyjętej skali źródłowej, a `OT(T)` stanem Czasu Ortogonalnego.
+
+W wersji podstawowej system jest więc funkcją wtórną względem czasu źródłowego, a nie autonomiczną skalą pierwotną.
+
+### 12.2. Co system zachowuje
+
+Chronometria Ortogonalna zachowuje następujące własności czasu klasycznego:
+
+1. zależność od chwili bazowej,
+2. ciągłość zmian przy ciągłym traktowaniu czasu wejściowego,
+3. okresowość wynikającą z ruchu wskazań,
+4. możliwość systematycznej konwersji z czasu klasycznego do czasu ortogonalnego,
+5. deterministyczność odwzorowania przy ustalonym modelu wejścia.
+
+Oznacza to, że dla każdej poprawnie zdefiniowanej chwili bazowej wynik czasu ortogonalnego jest jednoznacznie wyznaczony.
+
+### 12.3. Czego system nie zachowuje
+
+Chronometria Ortogonalna nie zachowuje wszystkich własności klasycznego czasu zegarowego.
+
+W szczególności system nie zachowuje:
+
+1. pełnej jednoznaczności odwrotnego odwzorowania,
+2. liniowego znaczenia minut jako podstawowej jednostki odczytu,
+3. pełnej rozróżnialności stanów różniących się o klasy równoważne w przestrzeni zredukowanej,
+4. bezpośredniej zgodności z urzędowymi skalami czasu bez użycia chwili bazowej.
+
+W konsekwencji Czas Ortogonalny nie jest w wersji 0.1 samowystarczalnym substytutem czasu cywilnego dla zastosowań administracyjnych, prawnych ani infrastrukturalnych.
+
+### 12.4. Jednoznaczność i niejednoznaczność
+
+Mapowanie z czasu klasycznego do Czasu Ortogonalnego jest funkcją jednoznaczną.
+
+Dla ustalonej chwili bazowej `T` istnieje dokładnie jeden stan `OT(T)` zgodny ze specyfikacją.
+
+Jednak mapowanie odwrotne nie jest jednoznaczne.
+
+Istnieją różne chwile bazowe `T1` i `T2`, dla których:
+
+`Orth(T1) = Orth(T2)`
+
+oraz nawet:
+
+`OT_partial(T1) = OT_partial(T2)`
+
+gdzie `OT_partial` oznacza zapis nieuwzględniający pełnej informacji o źródle chwili bazowej.
+
+Jest to konsekwencja:
+
+* redukcji modulo 180 stopni,
+* symetryzacji względem 90 stopni,
+* okresowości ruchu wskazań,
+* możliwego pomijania dodatkowych współrzędnych identyfikujących chwilę źródłową.
+
+### 12.5. Relacja do minut i godzin
+
+W klasycznym modelu godziny i minuty są jednostkami odczytu pierwotnego.
+
+W Chronometrii Ortogonalnej godzina i minuta nie są odczytem końcowym, lecz parametrami pośrednimi używanymi do wyznaczenia położeń kątowych.
+
+Oznacza to przejście:
+
+* z modelu indeksowego do modelu relacyjnego,
+* z modelu segmentowego do modelu geometrycznego,
+* z modelu numeracji do modelu odchylenia i struktury.
+
+### 12.6. Relacja do czasu analogowego
+
+Chronometria Ortogonalna pozostaje silnie związana z geometrią tarczy analogowej, ponieważ jej podstawowy model wykorzystuje położenia odpowiadające wskazaniu godzinowemu i minutowemu.
+
+Nie oznacza to jednak, że system musi być ograniczony do fizycznego zegara analogowego.
+
+Model analogowy należy traktować jako pierwszą realizację przestrzeni odniesienia, a nie jako jedyne możliwe ucieleśnienie systemu.
+
+W dalszym rozwoju możliwe jest uogólnienie systemu do abstrakcyjnej przestrzeni fazowej, niezależnej od klasycznej tarczy zegarowej.
+
+### 12.7. Relacja do czasu cyfrowego
+
+Czas cyfrowy zapisuje chwilę przez parę liczb lub ciąg liczb dyskretnych.
+
+Chronometria Ortogonalna nie korzysta z takiej reprezentacji jako formy pierwotnej odczytu. Zamiast tego przekształca dane liczbowe do relacji kątowych, a następnie do wartości ortogonalnej.
+
+Z tego względu system może być implementowany cyfrowo, ale nie jest systemem cyfrowym w sensie ontologicznym.
+
+### 12.8. Relacja do UTC, czasu lokalnego i Unix time
+
+UTC, czas lokalny oraz Unix time mogą pełnić rolę skali bazowej wejścia.
+
+Chronometria Ortogonalna nie konkuruje z nimi bezpośrednio w warstwie źródłowej, ponieważ nie definiuje w wersji 0.1 własnego niezależnego mechanizmu wyznaczania chwili absolutnej.
+
+Zamiast tego system działa jako formalna transformacja chwili bazowej do postaci ortogonalnej.
+
+W praktyce oznacza to, że:
+
+* UTC może służyć jako neutralna skala wejściowa,
+* czas lokalny może służyć jako skala użytkowa,
+* Unix time może służyć jako skala implementacyjna.
+
+### 12.9. Relacja do odwracalności
+
+W systemie klasycznym zapis godziny i minuty zazwyczaj pozwala wprost odtworzyć stan czasu w danym formacie.
+
+W Chronometrii Ortogonalnej wartość `Orth(T)` sama w sobie nie wystarcza do jednoznacznego odtworzenia chwili bazowej.
+
+Nawet rozszerzony zapis z Cyklem i Sferą może nie być wystarczający, jeśli nie zawiera dodatkowego kontekstu źródłowego.
+
+Wynika stąd fundamentalna cecha systemu:
+
+Chronometria Ortogonalna jest bardziej systemem projekcji i klasyfikacji relacyjnej niż pełnym kodem odwracalnym chwili źródłowej.
+
+### 12.10. Relacja do obiektywności
+
+W klasycznym sensie infrastrukturalnym obiektywność czasu oznacza zgodność ze wspólną, stabilną i synchronizowalną skalą odniesienia, taką jak UTC.
+
+Chronometria Ortogonalna nie spełnia jeszcze w wersji 0.1 tego kryterium jako niezależny system infrastrukturalny.
+
+Może jednak rościć sobie prawo do obiektywności w sensie formalnym i geometrycznym, o ile:
+
+1. reguły transformacji są ścisłe,
+2. wynik nie zależy od subiektywnej interpretacji obserwatora,
+3. każda chwila bazowa daje deterministyczny wynik,
+4. system jest spójny matematycznie.
+
+Dlatego w obecnej postaci należy mówić przede wszystkim o obiektywności transformacyjnej lub geometrycznej, a nie o pełnej obiektywności infrastrukturalnej.
+
+### 12.11. Status epistemiczny systemu
+
+Chronometria Ortogonalna może być rozumiana równocześnie jako:
+
+* formalny system transformacji czasu,
+* alternatywna reprezentacja chwili,
+* model relacyjny czasu zegarowego,
+* propozycja nowej chronometrii.
+
+W wersji 0.1 najbardziej uzasadnione jest traktowanie jej jako formalnego systemu transformacji i reprezentacji, który dopiero w dalszym rozwoju może aspirować do statusu autonomicznej skali czasu.
+
+### 12.12. Wniosek porównawczy
+
+Czas klasyczny odpowiada przede wszystkim na pytanie: „która jest godzina według przyjętej skali podziału?”.
+
+Czas Ortogonalny odpowiada przede wszystkim na pytanie: „jaki jest relacyjny stan geometryczny chwili w przestrzeni cyklicznej?”.
+
+Oba systemy opisują tę samą chwilę bazową, lecz czynią to za pomocą odmiennych zasad organizacji informacji.
+
+## 13. Plan dalszej rozbudowy dokumentu
 
 W kolejnych wersjach dokument zostanie rozszerzony o:
 
