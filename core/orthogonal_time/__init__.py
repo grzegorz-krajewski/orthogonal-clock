@@ -1,6 +1,6 @@
+from .converter import convert_base_time, convert_hms, convert_datetime
 from .model import BaseTime, OrthogonalState
-from .converter import convert_base_time, convert_hms
-from .notation import format_standard, format_full, to_machine_dict
+from .notation import format_full, format_short, format_standard, to_machine_dict
 from .trend import compute_observational_trend
 
 __all__ = [
@@ -8,7 +8,9 @@ __all__ = [
     "OrthogonalState",
     "convert_base_time",
     "convert_hms",
+    "convert_datetime",
     "format_standard",
+    "format_short",
     "format_full",
     "to_machine_dict",
     "compute_observational_trend",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .model import OrthogonalState
 
+
 TREND_SYMBOLS = {
     "up": "↑",
     "down": "↓",
@@ -11,23 +12,26 @@ TREND_SYMBOLS = {
 
 
 def format_standard(state: OrthogonalState) -> str:
-    sphere = state.sphere if state.sphere is not None else "?"
-    trend = TREND_SYMBOLS.get(state.trend, "?")
-    return f"[{sphere}] C{state.cycle} O{state.orth_int}.{state.centi:02d} {trend}"
+    trend_symbol = TREND_SYMBOLS[state.trend]
+    return f"[{state.sphere}] C{state.cycle} O{state.orth_int}.{state.centi:02d} {trend_symbol}"
 
 
 def format_short(state: OrthogonalState) -> str:
-    sphere = state.sphere if state.sphere is not None else "?"
-    trend = TREND_SYMBOLS.get(state.trend, "?")
-    return f"{sphere}{state.cycle}:{state.orth_int}.{state.centi:02d}{trend}"
+    trend_symbol = TREND_SYMBOLS[state.trend]
+    return f"{state.sphere}{state.cycle}:{state.orth_int}.{state.centi:02d}{trend_symbol}"
 
 
 def format_full(state: OrthogonalState) -> str:
-    sphere = state.sphere if state.sphere is not None else "?"
-    trend = TREND_SYMBOLS.get(state.trend, "?")
+    trend_symbol = TREND_SYMBOLS[state.trend]
     return (
-        f"OT[S={sphere}; C={state.cycle}; Orth={state.orth:.2f}; "
-        f"Oi={state.orth_int}; Ce={state.centi:02d}; Tr={trend}]"
+        "OT["
+        f"S={state.sphere}; "
+        f"C={state.cycle}; "
+        f"Orth={state.orth:.2f}; "
+        f"Oi={state.orth_int}; "
+        f"Ce={state.centi:02d}; "
+        f"Tr={trend_symbol}"
+        "]"
     )
 
 
@@ -42,9 +46,8 @@ def to_machine_dict(state: OrthogonalState) -> dict:
         "centi": state.centi,
         "trend": state.trend,
         "base": {
-            "scale": state.base.scale,
-            "hour": state.base.hour,
-            "minute": state.base.minute,
-            "second": state.base.second,
+            "hour": state.base_time.hour,
+            "minute": state.base_time.minute,
+            "second": state.base_time.second,
         },
     }

@@ -1,16 +1,16 @@
-# Core
+# core
 
-Ten katalog zawiera referencyjny rdzeń obliczeniowy Chronometrii Ortogonalnej.
+Rdzeń obliczeniowy Chronometrii Ortogonalnej.
 
-## Zasady
-- brak zależności od UI,
-- brak ukrytego pobierania czasu systemowego w funkcjach rdzenia,
-- rozdzielenie modelu, konwersji, notacji i trendu,
-- testy referencyjne jako pierwsza linia obrony zgodności.
+## Struktura
 
-## Moduły
-- `model.py` — struktury danych
-- `converter.py` — matematyka konwersji
-- `notation.py` — formatowanie
-- `trend.py` — trend obserwacyjny
-- `sphere.py` — robocza definicja sfery
+- `orthogonal_time/` — biblioteka rdzeniowa
+- `test/` — testy referencyjne i testy notacji
+
+## Uruchamianie testów
+
+Z katalogu repo:
+
+```bash
+pytest core/test
+```
