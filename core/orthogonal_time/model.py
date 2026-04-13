@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Literal
 
@@ -12,7 +10,7 @@ SphereValue = Literal["+", "-"]
 class BaseTime:
     hour: int
     minute: int
-    second: int = 0
+    second: float = 0
 
 
 @dataclass(frozen=True)
@@ -20,13 +18,13 @@ class OrthogonalState:
     base_time: BaseTime
     sphere: SphereValue
     cycle: int
-    hour_angle: float
-    minute_angle: float
-    hour_angle_reduced: float
-    minute_angle_reduced: float
-    diff_raw: float
-    diff_sym: float
     orth: float
     orth_int: int
     centi: int
     trend: TrendValue = "unknown"
+    hour_angle: float = 0.0
+    minute_angle: float = 0.0
+    hour_angle_reduced: float = 0.0
+    minute_angle_reduced: float = 0.0
+    diff_raw: float = 0.0
+    diff_sym: float = 0.0

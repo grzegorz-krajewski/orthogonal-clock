@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from core.orthogonal_time.model import OrthogonalState
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -10,6 +11,7 @@ from core.orthogonal_time.notation import (
     format_full,
     format_short,
     format_standard,
+    format_presentational,
     to_machine_dict,
 )
 
@@ -52,6 +54,29 @@ def test_machine_dict():
     assert data["centi"] == 0
     assert data["trend"] == "unknown"
 
+def test_presentational_notation():
+    state = convert_hms(3, 0, 0)
+    state = OrthogonalState(
+        base_time=state.base_time,
+        sphere=state.sphere,
+        cycle=state.cycle,
+        orth=state.orth,
+        orth_int=state.orth_int,
+        centi=state.centi,
+        trend="up",
+        hour_angle=state.hour_angle,
+        minute_angle=state.minute_angle,
+        hour_angle_reduced=state.hour_angle_reduced,
+        minute_angle_reduced=state.minute_angle_reduced,
+        diff_raw=state.diff_raw,
+        diff_sym=state.diff_sym,
+    )
+    assert format_presentational(
+        state,
+        base_hour=3,
+        base_minute=0,
+        show_seconds=False,
+    ) == "OT[-|C3|O0.00|↑] @ 03:00"
 
 if __name__ == "__main__":
     test_standard_notation_03_00()

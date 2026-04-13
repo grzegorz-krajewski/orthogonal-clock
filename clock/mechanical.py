@@ -1,17 +1,31 @@
-"""Mechanical / analog style experiments for Orthogonal Clock.
+from datetime import datetime
+import time
 
-This module is intentionally non-normative.
-Use `core/orthogonal_time` for the reference computational model.
-"""
+from core.orthogonal_time.converter import convert_hms
+from core.orthogonal_time.notation import format_standard
 
-from orthogonal_time.converter import convert_hms
-from orthogonal_time.notation import format_standard
+
+def current_display() -> str:
+    now = datetime.now()
+    state = convert_hms(now.hour, now.minute, now.second)
+    return format_standard(state)
 
 
 def demo():
-    state = convert_hms(3, 0, 0)
-    print(format_standard(state))
+    last_display = None
+
+    try:
+        while True:
+            display = current_display()
+
+            if display != last_display:
+                print("\r" + display, end="", flush=True)
+                last_display = display
+
+            time.sleep(0.05)
+    except KeyboardInterrupt:
+        print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     demo()
